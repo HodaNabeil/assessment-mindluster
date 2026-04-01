@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Setup Project Scaffolding",
+      "description": "Initialize Next.js with TypeScript, MUI, and React Query. Configure tsconfig, next.config,",
+      "column": "done",
+      "createdAt": "2026-03-28T08:00:00Z"
+    },
+    {
+      "id": 4,
+      "title": "Add Drag and Drop",
+      "description": "Integrate @hello-pangea/dnd for task movement between columns. Handle optimistic updates on column change.",
+      "column": "review",
+      "createdAt": "2026-03-30T08:00:00Z"
+    },
+    {
+      "id": 8,
+      "title": "Write Unit Tests",
+      "description": "Add unit tests for hooks and utility functions using Vitest and React Testing Library.",
+      "column": "done",
+      "createdAt": "2026-04-01T08:00:00Z"
+    },
+    {
+      "id": 10,
+      "title": "Accessibility Audit",
+      "description": "Run axe-core audit, fix keyboard navigation issues, and ensure all ARIA labels are correct.",
+      "column": "backlog",
+      "createdAt": "2026-04-01T10:00:00Z"
+    }
+  ]
+}
