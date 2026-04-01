@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -11,46 +11,62 @@ import {
   Select,
   MenuItem,
   Stack,
+  FormHelperText,
 } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTaskStore } from '../store/useTaskStore';
 import { useCreateTask, useUpdateTask } from '../hooks/useTaskMutations';
-import { COLUMNS, ColumnId } from '../types/task';
+import { COLUMNS } from '../types/task';
+import { taskSchema, TaskFormData } from '@/validation/tasks';
 
 export default function TaskFormDialog() {
   const { isFormDialogOpen, closeFormDialog, editingTask } = useTaskStore();
   const { mutateAsync: createTask, isPending: isCreating } = useCreateTask();
   const { mutateAsync: updateTask, isPending: isUpdating } = useUpdateTask();
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    column: 'backlog' as ColumnId,
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<TaskFormData>({
+    resolver: zodResolver(taskSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      column: 'backlog',
+    },
   });
 
   useEffect(() => {
     if (editingTask) {
-      setFormData({
+      reset({
         title: editingTask.title,
         description: editingTask.description,
         column: editingTask.column,
       });
     } else {
-      setFormData({
+      reset({
         title: '',
         description: '',
         column: 'backlog',
       });
     }
-  }, [editingTask]);
+  }, [editingTask, reset, isFormDialogOpen]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (editingTask) {
-      await updateTask({ id: editingTask.id, task: formData });
-    } else {
-      await createTask(formData);
+  const onSubmit = async (data: TaskFormData) => {
+    try {
+      if (editingTask) {
+        await updateTask({ id: editingTask.id, task: data });
+      } else {
+        await createTask(data);
+      }
+      reset();
+      closeFormDialog();
+    } catch (error) {
+      console.error('Failed to save task:', error);
     }
-    closeFormDialog();
   };
 
   return (
@@ -63,52 +79,82 @@ export default function TaskFormDialog() {
         sx: { borderRadius: 3, p: 1 }
       }}
     >
-      <DialogTitle fontWeight={700}>
+      <DialogTitle fontWeight={700} sx={{ pb: 1 }}>
         {editingTask ? 'Edit Task' : 'Create New Task'}
       </DialogTitle>
-      <form onSubmit={handleSubmit}>
-        <DialogContent>
-          <Stack spacing={3}>
-            <TextField
-              label="Title"
-              fullWidth
-              required
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              variant="outlined"
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <DialogContent sx={{ py: 1 }}>
+          <Stack spacing={2.5} sx={{ mt: 1 }}>
+            <Controller
+              name="title"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  autoFocus
+                  label="Title"
+                  fullWidth
+                  error={!!errors.title}
+                  helperText={errors.title?.message}
+                  variant="outlined"
+                  size="small"
+                />
+              )}
             />
-            <TextField
-              label="Description"
-              fullWidth
-              multiline
-              rows={4}
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              variant="outlined"
+
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Description"
+                  fullWidth
+                  multiline
+                  rows={3}
+                  error={!!errors.description}
+                  helperText={errors.description?.message}
+                  variant="outlined"
+                  size="small"
+                />
+              )}
             />
-            <FormControl fullWidth>
-              <InputLabel>Column</InputLabel>
-              <Select
-                value={formData.column}
-                label="Column"
-                onChange={(e) => setFormData({ ...formData, column: e.target.value as ColumnId })}
-              >
-                {COLUMNS.map((col) => (
-                  <MenuItem key={col.id} value={col.id}>
-                    {col.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+
+            <Controller
+              name="column"
+              control={control}
+              render={({ field }) => (
+                <FormControl fullWidth error={!!errors.column} size="small">
+                  <InputLabel>Column</InputLabel>
+                  <Select {...field} label="Column">
+                    {COLUMNS.map((col) => (
+                      <MenuItem key={col.id} value={col.id}>
+                        {col.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {errors.column && (
+                    <FormHelperText>{errors.column.message}</FormHelperText>
+                  )}
+                </FormControl>
+              )}
+            />
           </Stack>
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 3 }}>
-          <Button onClick={closeFormDialog}>Cancel</Button>
+        <DialogActions sx={{ px: 3, pb: 2.5, pt: 1 }}>
+          <Button onClick={closeFormDialog} color="inherit">
+            Cancel
+          </Button>
           <Button
             type="submit"
             variant="contained"
             disabled={isCreating || isUpdating}
-            sx={{ px: 3, borderRadius: 2 }}
+            sx={{
+              px: 4,
+              borderRadius: 2,
+              fontWeight: 600,
+              textTransform: 'none'
+            }}
           >
             {editingTask ? 'Save Changes' : 'Create Task'}
           </Button>
@@ -117,3 +163,4 @@ export default function TaskFormDialog() {
     </Dialog>
   );
 }
+

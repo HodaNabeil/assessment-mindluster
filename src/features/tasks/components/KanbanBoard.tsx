@@ -1,5 +1,5 @@
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import { Box, Button, Typography, Container, Fab, useMediaQuery, Theme } from '@mui/material';
+import { Box, Button, Typography, Fab, Theme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import KanbanColumn from './KanbanColumn';
 import { COLUMNS, ColumnId } from '../types/task';
@@ -9,7 +9,7 @@ import { useTaskStore } from '../store/useTaskStore';
 export default function KanbanBoard() {
   const { mutateAsync: moveTask } = useMoveTask();
   const { openFormDialog } = useTaskStore();
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+
 
   const handleDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result;
@@ -23,7 +23,7 @@ export default function KanbanBoard() {
       return;
     }
 
-    const taskId = parseInt(draggableId, 10);
+    const taskId = parseInt(draggableId);
     const newColumnId = destination.droppableId as ColumnId;
 
     await moveTask({ id: taskId, column: newColumnId });
@@ -40,22 +40,26 @@ export default function KanbanBoard() {
             Manage your daily tasks and keep track of progress.
           </Typography>
         </Box>
-        {!isMobile && (
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => openFormDialog()}
-            sx={{ px: 3, borderRadius: 2, fontWeight: 600 }}
-          >
-            Create Task
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => openFormDialog()}
+          sx={{
+            px: 3,
+            borderRadius: 2,
+            fontWeight: 600,
+            display: { xs: 'none', sm: 'inline-flex' }
+          }}
+        >
+          Create Task
+        </Button>
       </Box>
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <Box
           sx={{
             display: 'flex',
+            flexWrap: 'wrap',
             gap: 3,
             p: 4,
             pt: 2,
@@ -81,15 +85,18 @@ export default function KanbanBoard() {
         </Box>
       </DragDropContext>
 
-      {isMobile && (
-        <Fab
-          color="primary"
-          sx={{ position: 'fixed', bottom: 24, right: 24 }}
-          onClick={() => openFormDialog()}
-        >
-          <AddIcon />
-        </Fab>
-      )}
+      <Fab
+        color="primary"
+        sx={{
+          position: 'fixed',
+          bottom: 24,
+          right: 24,
+          display: { xs: 'flex', sm: 'none' }
+        }}
+        onClick={() => openFormDialog()}
+      >
+        <AddIcon />
+      </Fab>
     </Box>
   );
 }

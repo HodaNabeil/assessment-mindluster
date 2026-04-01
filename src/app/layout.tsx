@@ -1,9 +1,7 @@
 
-
-import { Toaster } from 'sonner';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import theme from './theme';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import Toaster from '@/components/shared/Toaster';
+import ThemeProvider from '@/providers/ThemeProvider';
 import QueryProvider from '@/providers/QueryProvider';
 import './globals.css';
 
@@ -19,13 +17,14 @@ export default function RootLayout({
         <meta name="description" content="A simple and elegant Kanban board" />
       </head>
       <body>
-        <QueryProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Toaster position="top-center" richColors />
-            {children}
-          </ThemeProvider>
-        </QueryProvider>
+        <AppRouterCacheProvider>
+          <QueryProvider>
+            <ThemeProvider>
+              <Toaster position="top-center" richColors />
+              {children}
+            </ThemeProvider>
+          </QueryProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

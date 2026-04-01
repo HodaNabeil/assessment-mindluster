@@ -2,31 +2,87 @@
   "tasks": [
     {
       "id": 1,
-      "title": "Setup Project Scaffolding",
-      "description": "Initialize Next.js with TypeScript, MUI, and React Query. Configure tsconfig, next.config,",
+      "title": "Design user authentication system",
+      "description": "Create wireframes and mockups for login, registration, and password reset flows",
       "column": "done",
-      "createdAt": "2026-03-28T08:00:00Z"
+      "createdAt": "2024-03-15T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "Implement JWT authentication",
+      "description": "Set up JSON Web Token authentication with refresh tokens and secure cookie handling",
+      "column": "done",
+      "createdAt": "2024-03-16T14:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "title": "Create task management API",
+      "description": "Build RESTful endpoints for CRUD operations on tasks with proper validation",
+      "column": "done",
+      "createdAt": "2024-03-17T09:15:00.000Z"
     },
     {
       "id": 4,
-      "title": "Add Drag and Drop",
-      "description": "Integrate @hello-pangea/dnd for task movement between columns. Handle optimistic updates on column change.",
+      "title": "Implement drag and drop functionality",
+      "description": "Add drag and drop capability for moving tasks between columns using @hello-pangea/dnd",
+      "column": "in_progress",
+      "createdAt": "2024-03-18T11:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "title": "Add task filtering and search",
+      "description": "Implement search functionality and filters by column, priority, and date range",
+      "column": "in_progress",
+      "createdAt": "2024-03-19T13:45:00.000Z"
+    },
+    {
+      "id": 6,
+      "title": "Optimize database queries",
+      "description": "Review and optimize slow database queries, add proper indexing",
       "column": "review",
-      "createdAt": "2026-03-30T08:00:00Z"
+      "createdAt": "2024-03-20T16:20:00.000Z"
+    },
+    {
+      "id": 7,
+      "title": "Write unit tests for task service",
+      "description": "Create comprehensive unit tests for all task service functions using Jest",
+      "column": "review",
+      "createdAt": "2024-03-21T10:30:00.000Z"
     },
     {
       "id": 8,
-      "title": "Write Unit Tests",
-      "description": "Add unit tests for hooks and utility functions using Vitest and React Testing Library.",
-      "column": "done",
-      "createdAt": "2026-04-01T08:00:00Z"
+      "title": "Implement real-time updates",
+      "description": "Add WebSocket support for real-time task updates across multiple clients",
+      "column": "backlog",
+      "createdAt": "2024-03-22T09:00:00.000Z"
+    },
+    {
+      "id": 9,
+      "title": "Add task comments feature",
+      "description": "Allow users to add comments and attachments to tasks for better collaboration",
+      "column": "backlog",
+      "createdAt": "2024-03-23T14:15:00.000Z"
     },
     {
       "id": 10,
-      "title": "Accessibility Audit",
-      "description": "Run axe-core audit, fix keyboard navigation issues, and ensure all ARIA labels are correct.",
+      "title": "Create user dashboard",
+      "description": "Build a personalized dashboard showing task statistics and recent activity",
       "column": "backlog",
-      "createdAt": "2026-04-01T10:00:00Z"
+      "createdAt": "2024-03-24T11:30:00.000Z"
+    },
+    {
+      "id": 11,
+      "title": "Implement task priorities",
+      "description": "Add priority levels (low, medium, high, urgent) with visual indicators",
+      "column": "backlog",
+      "createdAt": "2024-03-25T15:45:00.000Z"
+    },
+    {
+      "id": 12,
+      "title": "Add export functionality",
+      "description": "Allow users to export tasks and reports to PDF, CSV, and Excel formats",
+      "column": "backlog",
+      "createdAt": "2024-03-26T08:20:00.000Z"
     }
   ]
 }

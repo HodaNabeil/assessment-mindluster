@@ -2,8 +2,17 @@ import api from '@/lib/api';
 import { API_ENDPOINTS } from '@/constants';
 import { Task, ColumnId } from '../types/task';
 
+interface GetTasksParams {
+  _page: number;
+  _limit: number;
+  _sort: string;
+  _order: string;
+  column?: ColumnId;
+  q?: string;
+}
+
 export async function getTasks(columnId?: ColumnId, page = 1, limit = 10, search = '') {
-  const params: any = {
+  const params: GetTasksParams = {
     _page: page,
     _limit: limit,
     _sort: 'createdAt',
